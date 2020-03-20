@@ -86,6 +86,7 @@ app.main = {
     },
 
     createSbMessage: function () {
+        var self = this;
         var msg = $("#create-sb-message-input").val().trim();
 
         if (msg === "") {
@@ -94,7 +95,7 @@ app.main = {
         }
 
         app.ajax.createSbMessage(msg, function (res) {
-            console.log(res)
+            self.getSbMessages();
         });
     },
 
