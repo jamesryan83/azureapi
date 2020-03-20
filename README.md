@@ -2,7 +2,7 @@
 
 Small example of some various azure services called through the API management service
 
-https://logicexample.z8.web.core.windows.net/
+Website is here: https://logicexample.z8.web.core.windows.net/
 
 
 
