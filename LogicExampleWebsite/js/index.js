@@ -17,7 +17,7 @@ app.main = {
         var self = this;
 
         $("#reset-button").on("click", function () {
-            self.resetTable();
+            self.resetAll();
         });
 
         $("#create-row-form").submit(function (event) {
@@ -63,6 +63,7 @@ app.main = {
     },
 
     uploadImage: function () {
+        var self = this;
         var data = new FormData();
         var files = $("#Image")[0].files[0];
         data.append("Image", files);
