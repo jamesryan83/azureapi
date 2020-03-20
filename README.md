@@ -8,10 +8,10 @@ https://logicexample.z8.web.core.windows.net/
 
 ![logicexample](images/logicexample.png)
 
-![apim](images/apim.png)
+![apim](images/apim.PNG)
 
-![functions](images/functions.png)
+![functions](images/functions.PNG)
 
-![logic](images/logic.png)
+![logic](images/logic.PNG)
 
-![resgroup](images/resgroup.png)
+![resgroup](images/resgroup.PNG)
