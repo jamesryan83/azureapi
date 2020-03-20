@@ -125,13 +125,29 @@ app.ajax = {
 
     // Other
 
-    reset: function (db, blob, serviceBus, callback) {
+    imageOcr: function (imagePath, callback) {
+        $.ajax({
+            method: "POST",
+            url: this.apiManagementUrl + "/ocr",
+            contentType: "application/json",
+            data: JSON.stringify({ "imageUrl": imagePath }),
+            success: function (res) {
+                callback(res);
+            },
+            error: function (err) {
+                console.log(err);
+                alert("Error using OCR on image");
+            }
+        });
+    },
+
+    reset: function (db, blob, callback) {
         $.ajax({
             method: "POST",
             url: this.apiManagementUrl + "/reset",
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify({ "db": db, "blob": blob, "serviceBus": serviceBus }),
+            data: JSON.stringify({ "db": db, "blob": blob }),
             success: function (res) {
                 callback();
             },

@@ -6,6 +6,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <style>
+        h3 {
+            color: #1e90ff;
+        }
+
+        h5 {
+            color: #555;
+            text-decoration: underline;
+        }
+
         th, td {
             padding: 2px 15px;
         }
@@ -55,15 +64,21 @@
                     <button type="submit" class="btn btn-primary">Create Message</button>
                 </form>
 
-                <!-- Get sql as csv -->
+                <!-- Get SQL as CSV -->
                 <h5 class="mt-5">Get SQL data as CSV</h5>
                 <button class="btn btn-primary" id="get-csv-button">Get CSV</button>
+
+                <!-- Image OCR -->
+                <h5 class="mt-5">Cognitive Services extract text from image</h5>
+                <p>First upload an image in the "upload image" section above that contains text.  Then select an image from the dropdown menu below, then click Get Text from Image button</p>
+                <div id="ocr-images-container" class="mt-2"></div>
+                <button class="btn btn-primary" id="get-ocr-button">Get Text from Image</button>
             </div>
 
 
             <!-- Data in Azure -->
             <div class="col-md-5">
-                <h3>Data in Azure</h3>
+                <h3>Outputs</h3>
 
                 <!-- sql database -->
                 <h5 class="mt-4">SQL Database</h5>
@@ -78,7 +93,7 @@
                 </table>
 
                 <!-- blob storage -->
-                <h5 class="mt-5">Blob Storage</h5>
+                <h5 class="mt-5">Uploaded Images</h5>
                 <div id="image-container" class="mt-2"></div>
 
                 <!-- service bus -->
@@ -86,7 +101,12 @@
                 <div id="sb-container"></div>
 
                 <!-- csv -->
+                <h5 class='mt-5'>SQL Data as CSV</h5>
                 <div id="csv-container" class="mt-2"></div>
+
+                <!-- csv -->
+                <h5 class='mt-5'>OCR Extracted Text</h5>
+                <div id="ocr-text-container" class="mt-2"></div>
             </div>
         </div>
     </div>

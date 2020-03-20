@@ -38,6 +38,10 @@ app.main = {
             self.createSbMessage();
         });
 
+        $("#get-ocr-button").click(function () {
+            self.ocrImage();
+        });
+
         this.resetTable();
         this.addImagesToOutput();
         this.getSbMessages();
@@ -75,8 +79,7 @@ app.main = {
 
     getCsv: function() {
         app.ajax.getCsv(function (csv) {
-            var csvStr = "<h5 class='mt-5'>SQL Data as CSV</h5>" +
-                "<textarea style='height: 200px; width: 200px;' spellcheck=false>" + csv + "</textarea>";
+            var csvStr = "<textarea style='height: 200px; width: 200px;' spellcheck=false>" + csv + "</textarea>";
 
             $("#csv-container").empty().append(csvStr);
         });
@@ -95,8 +98,6 @@ app.main = {
         });
     },
 
-
-
     addRowsToTableOutput: function (data) {
         var rows = "";
         for (var i = 0; i < data.length; i++) {
@@ -110,11 +111,21 @@ app.main = {
         var self = this;
 
         app.ajax.getImages(function (blobs) {
+
+            // images
             var images = "";
             for (var i = 0; i < blobs.length; i++) {
-                images += '<img src="' + self.blobStorageUrl + '/images/' + blobs[i].Name + '" height="100" width="100"></img>';
+                images += '<img class="m-2" src="' + self.blobStorageUrl + '/images/' + blobs[i].Name + '" height="100" width="100"></img>';
             }
             $("#image-container").empty().append(images);
+
+            // ocr dropdown
+            var dropdown = "<select id='select-ocr-path' class='form-control mb-3'>";
+            for (var i = 0; i < blobs.length; i++) {
+                dropdown += '<option value="' + self.blobStorageUrl + '/images/' + blobs[i].Name + '">' + blobs[i].Name + '</option>';
+            }
+            dropdown += "</select>"
+            $("#ocr-images-container").empty().append(dropdown);
         });
     },
 
@@ -130,7 +141,14 @@ app.main = {
         });
     },
 
+    ocrImage: function () {
+        var imagePath = $("#select-ocr-path").val();
+        app.ajax.imageOcr(imagePath, function (ocrText) {
+            var textarea = "<textarea style='height: 300px; width: 300px;' spellcheck=false>" + ocrText + "</textarea>";
 
+            $("#ocr-text-container").empty().append(textarea);
+        });
+    },
 
     resetTable: function () {
         var self = this;
@@ -144,7 +162,7 @@ app.main = {
         var self = this;
 
         if (confirm("This will reset all the data back to its original state")) {
-            app.ajax.reset(true, true, true, function ()
+            app.ajax.reset(true, true, function ()
             {
                 alert("Reset complete");
                 self.resetTable();
