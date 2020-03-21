@@ -210,7 +210,7 @@ app.main = {
         if (confirm("This will reset all the data back to its original state")) {
             this.showLoadingScreen();
 
-            app.ajax.reset(true, true, function ()
+            app.ajax.reset(true, true, true, function ()
             {
                 alert("Reset complete");
                 self.resetTable();

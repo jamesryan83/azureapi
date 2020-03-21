@@ -149,13 +149,13 @@ app.ajax = {
         });
     },
 
-    reset: function (db, blob, callback) {
+    reset: function (db, blob, serviceBus, callback) {
         $.ajax({
             method: "POST",
             url: this.apiManagementUrl + "/reset",
             contentType: "application/json",
             dataType: "json",
-            data: JSON.stringify({ "db": db, "blob": blob }),
+            data: JSON.stringify({ "db": db, "blob": blob, "serviceBus": serviceBus }),
             success: function (res) {
                 callback();
             },

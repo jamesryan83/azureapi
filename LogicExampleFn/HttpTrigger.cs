@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
@@ -63,7 +65,7 @@ namespace LogicExampleFn
 
                 return new OkObjectResult(JsonConvert.SerializeObject(entity.Entity));
             }
-                
+
             return new BadRequestObjectResult("Invalid inputs");
         }
 
@@ -94,7 +96,7 @@ namespace LogicExampleFn
 
         // ----------------------- Blob Storage -----------------------
 
-                    
+
         [FunctionName("PostImage")]
         public async Task<IActionResult> PostImage(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "image")] HttpRequest req, ILogger log)
@@ -104,7 +106,7 @@ namespace LogicExampleFn
 
             var blobClient = storageAccount.CreateCloudBlobClient();
             var container = blobClient.GetContainerReference("images");
-            
+
             var form = await req.ReadFormAsync();
             var image = form.Files[0];
 
@@ -164,5 +166,40 @@ namespace LogicExampleFn
             return new OkObjectResult(JsonConvert.SerializeObject(blobNames));
         }
 
+
+        [FunctionName("ResetServiceBus")]
+        public async Task<IActionResult> ResetServiceBus(
+            [HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req, ILogger log)
+        {
+            var str = Environment.GetEnvironmentVariable("ServiceBusConnectionString");
+            var receiver = new MessageReceiver(str, "logicexample", ReceiveMode.ReceiveAndDelete);
+
+            while (true)
+            {
+                try
+                {
+                    Message message = await receiver.PeekAsync();
+                    if (message != null)
+                    {
+                        await receiver.ReceiveAsync();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                catch (ServiceBusException e)
+                {
+                    if (!e.IsTransient)
+                    {
+                        Console.WriteLine(e.Message);
+                        throw;
+                    }
+                }
+            }
+            await receiver.CloseAsync();
+
+            return new OkObjectResult("OK");
+        }
     }
 }
