@@ -215,7 +215,9 @@ app.main = {
                 alert("Reset complete");
                 self.resetTable();
                 self.addImagesToOutput();
-                self.getSbMessages();
+                $("#sb-container").empty();
+                $("#ocr-text-container").empty();
+                $("#search-table-body").empty();
                 self.hideLoadingScreen();
             });
         }
