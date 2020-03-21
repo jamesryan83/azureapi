@@ -6,6 +6,7 @@ var app = app || {};
 app.ajax = {
 
     apiManagementUrl: "https://logicexamplejr.azure-api.net/api",
+    searchUrl: "https://logicexample.search.windows.net/indexes/logicexample-index/docs?api-version=2019-05-06&search=",
 
 
     // Blob storage
@@ -18,8 +19,7 @@ app.ajax = {
                 callback(res);
             },
             error: function (err) {
-                console.log(err);
-                alert("Error getting images");
+                app.ajax.onError(err, "Error getting images");
             }
         });
 	},
@@ -35,8 +35,7 @@ app.ajax = {
                 callback();
             },
             error: function (err) {
-                console.log(err);
-                alert("Error uploading image");
+                app.ajax.onError(err, "Error uploading image");
 			}
         });
     },
@@ -53,8 +52,7 @@ app.ajax = {
                 callback(res);
             },
             error: function (err) {
-                console.log(err);
-                alert("Error getting row data");
+                app.ajax.onError(err, "Error getting row data");
             }
         })
     },
@@ -68,8 +66,7 @@ app.ajax = {
                 callback(res);
             },
             error: function (err) {
-                console.log(err);
-                alert("Error creating row");
+                app.ajax.onError(err, "Error creating row");
             }
         });
     },
@@ -82,8 +79,7 @@ app.ajax = {
                 callback(res);
             },
             error: function (err) {
-                console.log(err);
-                alert("Error creating csv");
+                app.ajax.onError(err, "Error creating csv");
             }
         });
     },
@@ -97,12 +93,10 @@ app.ajax = {
             url: this.apiManagementUrl + "/sbmessage",
             data: message,
             success: function (res) {
-                alert("MessageCreated");
-                callback();
+                callback(res);
             },
             error: function (err) {
-                console.log(err);
-                alert("Error creating service bus message");
+                app.ajax.onError(err, "Error creating service bus message");
             }
         });
     },
@@ -115,8 +109,7 @@ app.ajax = {
                 callback(res);
             },
             error: function (err) {
-                console.log(err);
-                alert("Error getting service bus messages");
+                app.ajax.onError(err, "Error getting service bus messages");
             }
         });
     },
@@ -135,8 +128,23 @@ app.ajax = {
                 callback(res);
             },
             error: function (err) {
-                console.log(err);
-                alert("Error using OCR on image");
+                app.ajax.onError(err, "Error using OCR on image");
+            }
+        });
+    },
+
+    azureSearch: function (searchTerm, callback) {
+        $.ajax({
+            method: "GET",
+            url: this.searchUrl + searchTerm,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("api-key", "EC05C9CFEAC61259BBCAB3C476409044");
+            },
+            success: function (res) {
+                callback(res);
+            },
+            error: function(err) {
+                app.ajax.onError(err, "Error performing search");
             }
         });
     },
@@ -152,9 +160,14 @@ app.ajax = {
                 callback();
             },
             error: function (err) {
-                console.log(err);
-                alert("Error resetting data");
+                app.ajax.onError(err, "Error resetting data");
             }
         });
+    },
+
+    onError: function (err, message) {
+        console.log(err);
+        alert(message);
+        app.main.hideLoadingScreen();
     }
 }
