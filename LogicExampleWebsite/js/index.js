@@ -215,6 +215,7 @@ app.main = {
                 alert("Reset complete");
                 self.resetTable();
                 self.addImagesToOutput();
+                self.getSbMessages();
                 self.hideLoadingScreen();
             });
         }
