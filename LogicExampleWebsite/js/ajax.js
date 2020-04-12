@@ -136,7 +136,7 @@ app.ajax = {
     azureSearch: function (searchTerm, callback) {
         $.ajax({
             method: "GET",
-            url: this.searchUrl + searchTerm,
+            url: this.searchUrl + searchTerm + "*",
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("api-key", "EC05C9CFEAC61259BBCAB3C476409044");
             },
