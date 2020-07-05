@@ -141,7 +141,7 @@ namespace LogicExampleFn
                     foreach (var blobItem in resultSegment.Results)
                     {
                         string name = ((CloudBlob)blobItem).Name;
-                        if (name != "dog.jpg")
+                        if (name != "default.png")
                         {
                             blobNames.Add(name);
                         }
